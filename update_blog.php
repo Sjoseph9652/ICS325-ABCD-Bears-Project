@@ -24,6 +24,7 @@ $creator_email = $_SESSION['email'];
 // Update query
 $sql = "UPDATE blogs SET title='$title', description='$description', event_date='$event_date', privacy_filter='$privacy_filter' WHERE blogs . blog_id='$blog_id';";
 echo $sql;
+
 if ($conn->query($sql) === TRUE) 
 {
     echo "Blog updated successfully. <br/> <a href='logged-in.php'>My profile</a>";

@@ -1,4 +1,3 @@
-
 <?php
 require 'db_configuration.php';
 $status = session_status();

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +19,10 @@
             <li><a href="create_blog.php">Create Blog Post</a></li>
         </ul>
     </nav>
+    <form method="GET" action="index.php">
+        <button type="submit" name="sort" value="title">Sort Alphabetically</button>
+        <button type="submit" name="sort" value="creation_date">Sort by Creation Date</button>
+    </form>
     <script src="script.js"></script>
 </body>
 </html>
@@ -43,7 +46,13 @@
       die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql = "SELECT title, description, creator_email, event_date, creation_date FROM blogs WHERE privacy_filter = 'public' ORDER BY title ASC";
+  $order_by = "title";
+  if (isset($_GET['sort']) && $_GET['sort'] == 'creation_date') 
+  {
+    $order_by = "creation_date DESC";
+  }
+
+  $sql = "SELECT title, description, creator_email, event_date, creation_date FROM blogs WHERE privacy_filter = 'public' ORDER BY $order_by";
   $result = $conn->query($sql);
 
   // if $result returned something
@@ -68,4 +77,3 @@
   }
   $conn->close();
 ?>
-
