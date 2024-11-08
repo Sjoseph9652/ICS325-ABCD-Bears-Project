@@ -26,7 +26,6 @@
             <li><a href="index.php">Home</a></li>
             <li><a href="sign-in.php">Sign In</a></li>
             <li><a href="create-account.php">Create Account</a></li>
-            <li><a href="create_blog.php">Create Blog Post</a></li>
         </ul>
     </nav>
 

@@ -9,8 +9,8 @@
 <body>
     <h2>Create a New Blog Post</h2>
     <form action="save_blog.php" method="POST" enctype="multipart/form-data">
-        <label for="creator">Creator Email:</label>
-        <input type="email" id="creator" name="creator" required><br><br>
+        <label for="creator_email">Creator Email:</label>
+        <input type="email" id="creator_email" name="creator_email" required><br><br>
 
         <label for="title">Blog Title:</label>
         <input type="text" id="title" name="title" pattern="^[A-Za-z0-9].*" title="Title must start with a letter or number" required><br><br>
@@ -24,8 +24,8 @@
         <label for="event_date">Event Date:</label>
         <input type="date" id="event_date" name="event_date" required><br><br>
 
-        <label for="privacy">Privacy Setting:</label>
-        <select id="privacy" name="privacy">
+        <label for="privacy_filter">Privacy Setting:</label>
+        <select id="privacy_filter" name="privacy_filter">
             <option value="private" selected>Private</option>
             <option value="public">Public</option>
         </select><br><br>

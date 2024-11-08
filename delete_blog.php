@@ -1,33 +1,37 @@
 <?php
-  require 'db_configuration.php';
-  session_start();
+require 'db_configuration.php';
+session_start();
 
-  if (!isset($_SESSION["email"])) {
+if (!isset($_SESSION["email"])) {
     echo "You need to be logged in to update blogs.";
     exit;
-  }
+}
 
-  $conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+$conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 
-if ($conn->connect_error)
-{
+if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Escape inputs to prevent SQL injection
-$blog_id = $conn->escape_string($_POST['blog_id']);
+// Check if blog_id is provided
+if (!isset($_POST['blog_id']) || empty($_POST['blog_id'])) {
+    echo "No blog ID provided.";
+    exit;
+}
+
+$blog_id = $_POST['blog_id'];
 $creator_email = $_SESSION['email'];
 
-// Delete query
-$sql = "DELETE FROM blogs WHERE blog_id='$blog_id' AND creator_email='$creator_email';";
+// Use prepared statements to prevent SQL injection
+$sql = $conn->prepare("DELETE FROM blogs WHERE blog_id = ? AND creator_email = ?");
+$sql->bind_param("is", $blog_id, $creator_email);
 
-if ($conn->query($sql) === TRUE) 
-{
+if ($sql->execute()) {
     echo "Blog deleted successfully. <br/> <a href='logged-in.php'>My profile</a>";
-} 
-else 
-{
+} else {
     echo "Error deleting blog: " . $conn->error;
 }
-  $conn->close();
+
+$sql->close();
+$conn->close();
 ?>
