@@ -1,3 +1,45 @@
+<?php
+session_start(); // Start the session to access session variables
+
+// Check if the user is logged in by verifying session variables
+if (!isset($_SESSION["email"])) {
+    echo "You need to be logged in to view your blogs.";
+    exit;
+}
+
+// User is logged in, continue with fetching and displaying the blogs
+require 'db_configuration.php';
+$conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+$user_mail = $_SESSION["email"]; // Get the logged-in user's email
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch user blogs
+$sql = "SELECT blog_id, title, description, event_date, privacy_filter, creation_date FROM blogs WHERE creator_email = '$user_mail'";
+
+// Optional filters and sorting (as in your original code)
+
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<div>";
+        echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
+        echo "<p>Event Date: " . htmlspecialchars($row['event_date']) . "</p>";
+        echo "<p>" . htmlspecialchars($row['description']) . "</p>";
+        echo "<p>Posted on: " . htmlspecialchars($row['creation_date']) . "</p>";
+        echo "<p>Privacy: " . htmlspecialchars($row['privacy_filter']) . "</p>";
+        echo "</div><hr>";
+    }
+} else {
+    echo "<p>No blogs yet!</p>";
+}
+
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,14 +85,7 @@
 </div>
 
 <?php
-require 'db_configuration.php';
-session_start();
-
-if (!isset($_SESSION["email"])) {
-    echo "You need to be logged in to view your blogs.";
-    exit;
-}
-
+// Now that the session is validated, we can proceed to display the blogs
 $conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 $user_mail = $_SESSION["email"];
 
@@ -101,7 +136,7 @@ if ($result->num_rows > 0) {
             $files = glob($image_dir . "/*.*");
             if (count($files) > 0) {
                 // Display the first image found in the folder
-                echo "<img src='" . htmlspecialchars($files[0]) . "' alt='Blog Image' style='width:200px; height:auto;'/>";
+                echo "<img src='" . htmlspecialchars($files[0]) . "' alt='Blog Image' style='width:200px; height:auto;'/> ";
             }
         }
 
@@ -120,6 +155,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "<p>No blogs yet!</p>";
 }
+
 $conn->close();
 ?>
 
