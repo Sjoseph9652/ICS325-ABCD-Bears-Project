@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $book_id = $conn->insert_id; // Get the ID of the new book
 
         // Insert the selected blog posts into the book
-        $stmt = $conn->prepare("INSERT INTO alphabet_book (book_id, blog_id) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO alphabet_book_blogs (book_id, blog_id) VALUES (?, ?)");
         foreach ($selected_blogs as $blog_id) {
             $stmt->bind_param("ii", $book_id, $blog_id);
             $stmt->execute();

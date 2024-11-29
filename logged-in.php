@@ -15,7 +15,7 @@
         <li><a href="index.php">Home</a></li>
         <li><a href="create_blog.php">Create Blog Post</a></li>
         <li><a href="alphabet_book.php"> Create Alphabet Book</a></li>
-        <li><a href="display_alphabet_book.html"> View Alphabet Book</a></li>
+        <li><a href="view_alphabet_books.php"> View Alphabet Book</a></li>
     </ul>
 </nav>
 

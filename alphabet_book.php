@@ -48,7 +48,7 @@ $conn->close();
     <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="create_blog.php">Create Blog Post</a></li>
-        <li><a href="alphabet_book.php">View Alphabet Book</a></li>
+        <li><a href="view_alphabet_books.php">View Alphabet Book</a></li>
     </ul>
 </nav>
 
@@ -69,7 +69,7 @@ $conn->close();
         <tbody>
             <?php foreach ($blogs as $blog): ?>
                 <tr>
-                    <td><input type="checkbox" name="selected_blogs[]" value="<?php echo $blog['blog_id']; ?>"></td>
+                    <td><input type="checkbox" name="selected_blogs[]" value="<?php echo $blog['blog_id']; ?>"></td> <!-- Find the blog ID associated with the user and display it that way -->
                     <td><?php echo htmlspecialchars($blog['title']); ?></td>
                 </tr>
             <?php endforeach; ?>
