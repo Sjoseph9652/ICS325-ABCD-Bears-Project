@@ -1,3 +1,17 @@
+<?php
+session_start(); // Start the session to access session variables
+require 'db_configuration.php';
+// Check if the user is logged in by verifying session variables
+if (isset($_SESSION["email"])) {
+    echo "You are logged in as " . $_SESSION["first_name"] . " " . $_SESSION["last_name"];
+    // Display additional content for logged-in users
+} else {
+    echo "You are not logged in. Please log in.";
+}
+
+// Rest of the page content
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +45,7 @@
         <li><a href="sign-in.php">Sign In</a></li>
         <li><a href="create-account.php">Create Account</a></li>
         <li><a href="create_blog.php">Create Blog Post</a></li>
+        <li><a href="logged-in.php">My Blogs</a></li>
     </ul>
 </nav>
 
@@ -41,7 +56,7 @@
         <option value="">All</option>
         <?php
         foreach (range('A', 'Z') as $letter) {
-            echo "<option value='$letter'>" . (isset($_GET['alpha']) && $_GET['alpha'] === $letter ? "selected" : "") . ">$letter</option>";
+            echo "<option value='$letter'" . (isset($_GET['alpha']) && $_GET['alpha'] === $letter ? " selected" : "") . ">$letter</option>";
         }
         ?>
     </select>
@@ -51,20 +66,18 @@
     <input type="date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
 
     <!-- Sort buttons as part of the form -->
-    <input type="hidden" name="order" value="<?php echo isset($_GET['order']) ? $_GET['order'] : ''; ?>">
     <button type="submit" name="order" value="alphabetical" class="sort-button">Alphabetical</button>
     <button type="submit" name="order" value="chronological" class="sort-button">Chronological</button>
 </form>
 
 <?php
-require 'db_configuration.php';
 
 $conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Determine the sorting order based on the selected button (default is alphabetical)
+// Default sorting order is alphabetical
 $order = 'title ASC';
 if (isset($_GET['order']) && $_GET['order'] == 'chronological') {
     $order = 'creation_date DESC'; // Display most recent blogs first
@@ -96,7 +109,7 @@ if ($result->num_rows > 0) {
     echo "<h1>Public Blogs</h1>";
     while ($row = $result->fetch_assoc()) {
         echo "<div>";
-        echo "<h2><a href='view_blog.php?blog_id=" . $row['blog_id'] . "'>" . htmlspecialchars($row['title']) . "</a></h2>"; // find the clicked blog's id, goes to view_blog.php displaying that blog
+        echo "<h2>" . htmlspecialchars($row['title']) . "</h2>";
         echo "<p>By: " . htmlspecialchars($row['creator_email']) . "</p>";
         echo "<p>Event Date: " . htmlspecialchars($row['event_date']) . "</p>";
         echo "<p>" . htmlspecialchars($row['description']) . "</p>";
@@ -104,13 +117,23 @@ if ($result->num_rows > 0) {
 
         // Check if an image folder exists for this blog_id and display the first image
         $image_dir = 'images/' . $row['blog_id'];
+        $default_image_path = 'images/default/abcDefault.png';
         if (is_dir($image_dir)) {
             $files = glob($image_dir . "/*.*"); // Find any file in the folder
             if (count($files) > 0) {
-                echo "<img src='" . htmlspecialchars($files[0]) . "' alt='Blog Image' style='width:200px; height:auto;'/>";
+                echo "<img src='" . htmlspecialchars($files[0]) . "' alt='Blog Image' style='width:200px; height:auto;' />";
             }
+        } else {
+            // Use default image if the folder doesn't exist
+            echo "<img src='" . htmlspecialchars($default_image_path) . "' alt='Default Blog Image' style='width:200px; height:auto;' />";
         }
-        
+
+        // Check if the user is logged in and is an admin
+        if (isset($_SESSION["email"]) && $_SESSION["role"] === 'admin') {
+        // Only admin users will see the Edit and Delete links
+        echo "<a href='edit.php?id=" . $row['blog_id'] . "'>Edit</a> | ";
+        echo "<a href='delete_blog.php?blog_id=" . urlencode($row['blog_id']) . "' onclick=\"return confirm('Are you sure you want to delete this blog?');\">Delete</a>";        }
+
         echo "</div><hr>";
     }
 } else {

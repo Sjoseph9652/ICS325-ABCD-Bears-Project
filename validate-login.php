@@ -1,10 +1,8 @@
 <?php
 require 'db_configuration.php';
 
-$status = session_status();
-if ($status == PHP_SESSION_NONE) {
-    session_start();
-}
+// Start the session at the beginning
+session_start();
 
 // Create Connection
 $conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
@@ -24,20 +22,27 @@ $sql = "SELECT role, first_name, last_name FROM users WHERE email='$usermail' AN
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
+    // User found, fetch data
     $entry = $result->fetch_assoc();
+    
+    // Set session variables
     $_SESSION["email"] = $usermail;
-    $_SESSION["role"] = $entry['role']; // Use lowercase 'role' based on your earlier description
-    $_SESSION["first_name"] = $entry['first_name']; // Make sure the case matches your column name
-    $_SESSION["last_name"] = $entry['last_name']; // Same here
+    $_SESSION["role"] = $entry['role']; // Role from the database
+    $_SESSION["first_name"] = $entry['first_name']; // User's first name
+    $_SESSION["last_name"] = $entry['last_name']; // User's last name
+
+    // Redirect to logged-in page
     header('Location: logged-in.php');
+    exit;
 } else {
-    // Optional: Handle invalid login attempt
+    // Invalid login credentials
     echo "Invalid email or password.";
 }
 
-// Close connection
+// Close the database connection
 $conn->close();
 ?>
+
 
 
 
