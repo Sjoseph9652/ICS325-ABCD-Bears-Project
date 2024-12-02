@@ -1,4 +1,36 @@
-<?php
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog ABCD</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+    </style>
+</head>
+
+
+<body>
+<main>
+<header>
+    <a href="index.php">
+        <img src="images/abcd.png" alt="ABCD Blog Logo">
+    </a>
+</header>
+
+<body>
+<nav>
+    <ul>
+        <li><a href="index.php">Home/Log-Out</a></li>
+        <li><a href="create_blog.php">Create Blog Post</a></li>
+    </ul>
+</nav>
+
+
+
+    <?php
   require 'db_configuration.php';
   session_start();
 
@@ -24,9 +56,10 @@ $creator_email = $_SESSION['email'];
 // Update query
 $sql = "UPDATE blogs SET title='$title', description='$description', event_date='$event_date', privacy_filter='$privacy_filter' WHERE blogs . blog_id='$blog_id';";
 echo $sql;
+
 if ($conn->query($sql) === TRUE) 
 {
-    echo "Blog updated successfully. <br/> <a href='logged-in.php'>My profile</a>";
+  echo "<div style='text-align:center;'>Blog updated successfully. <br/> <a href='logged-in.php'>My profile</a></div>";
 } 
 else 
 {
@@ -34,3 +67,13 @@ else
 }
 $conn->close();
 ?>
+
+
+
+  </main>
+    <script src="script.js"></script>
+    <footer>
+        <p>© 2024 ABCD Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>
