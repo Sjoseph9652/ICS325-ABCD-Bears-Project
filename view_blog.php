@@ -74,6 +74,7 @@ if (is_dir($imageDirectory)) {
         <img src="<?php echo htmlspecialchars($default_image_path); ?>" alt="Default Blog Image" style="width: 200px; height: auto;">
     <?php endif; ?>
 
-        <a href="javascript:history.back()"><br>Back to User's Blogs</a>
+        <a class="btn btn-primary" href="javascript:history.back()">Return to Blogs</a>
+        <a class="btn btn-primary" href="index.php">Return to Home</a>
 </body>
 </html>

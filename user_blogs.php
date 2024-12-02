@@ -93,6 +93,7 @@ $conn->close();
         });
     </script>
 
-    <a href="viewUsers.php">Back to Users</a>
+    <a class="btn btn-primary" href="viewUsers.php">Return to Users</a>
+    <a class="btn btn-primary" href="index.php">Return to Home</a>
 </body>
 </html>
