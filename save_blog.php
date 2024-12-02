@@ -1,22 +1,25 @@
 <?php
 require 'db_configuration.php';
 
-$status = session_status();
-if ($status == PHP_SESSION_NONE) {
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 $conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$creator_email = $_POST['creator_email'];
-$title = $_POST['title'];
-$description = $_POST['description'];
-$event_date = $_POST['event_date'];
-$privacy_filter = $_POST['privacy_filter'];
+$creator_email = isset($_POST['creator_email']) ? $_POST['creator_email'] : null;
+$title = isset($_POST['title']) ? $_POST['title'] : null;
+$description = isset($_POST['description']) ? $_POST['description'] : null;
+$event_date = isset($_POST['event_date']) ? $_POST['event_date'] : null;
+$privacy_filter = isset($_POST['privacy_filter']) ? $_POST['privacy_filter'] : 'public';
+
+if (!$creator_email || !$title || !$privacy_filter) {
+    die("Error: Missing required fields.");
+}
+
 $creation_date = date('Y-m-d H:i:s');
 $modification_date = $creation_date;
 
