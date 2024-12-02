@@ -19,11 +19,48 @@
         .sort-button:hover {
             background-color: #45a049;
         }
+            form {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+    }
+    
+    
+    form label {
+        font-size: 16px;
+    }
+    
+    form input, form select, form button {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    form button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    
+    form button:hover {
+        background-color: #0056b3;
+    }
     </style>
 </head>
 <body>
-
-<h1>ABCD BLOG</h1>
+<main>
+<header>
+    <a href="index.php">
+        <img src="images/abcd.png" alt="ABCD Blog Logo">
+    </a>
+</header>
 
 <nav>
     <ul>
@@ -118,6 +155,9 @@ if ($result->num_rows > 0) {
 }
 $conn->close();
 ?>
-
+</main>
+<footer>
+    <p>© 2024 ABCD Blog. All rights reserved.</p>
+</footer>
 </body>
 </html>
