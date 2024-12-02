@@ -57,7 +57,7 @@ $conn->close();
 </head>
 <body>
     <h1>Blogs by <?php echo htmlspecialchars($user['first_name'] . " " . $user['last_name']); ?></h1>
-    <p>Email: <?php echo htmlspecialchars($user['email']); ?></p>
+    <h1>Email: <?php echo htmlspecialchars($user['email']); ?></h1>
 
     <table id="userBlogsTable" class="display">
         <thead>
