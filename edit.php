@@ -44,7 +44,12 @@
 <header>
 <h1>Edit Blog: <?php echo htmlspecialchars($blog['title']); ?></h1>
 </header>
-
+<nav>
+    <ul>
+        <li><a href="index.php">Home/Log-Out</a></li>
+        <li><a href="create_blog.php">Create Blog Post</a></li>
+    </ul>
+</nav>
 <div id="edit-form">
   <form action="update_blog.php" method="POST">
       <input type="hidden" name="blog_id" value="<?php echo htmlspecialchars($blog['blog_id']); ?>">
