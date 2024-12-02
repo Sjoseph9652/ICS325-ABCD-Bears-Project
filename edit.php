@@ -39,30 +39,38 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
+<main>
 <!--Form for user input to update the blog with-->
+<header>
 <h1>Edit Blog: <?php echo htmlspecialchars($blog['title']); ?></h1>
+</header>
 
-<form action="update_blog.php" method="POST">
-    <input type="hidden" name="blog_id" value="<?php echo htmlspecialchars($blog['blog_id']); ?>">
+<div id="edit-form">
+  <form action="update_blog.php" method="POST">
+      <input type="hidden" name="blog_id" value="<?php echo htmlspecialchars($blog['blog_id']); ?>">
 
-    <label for="title">Title:</label><br>
-    <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($blog['title']); ?>" required><br><br>
+      <label for="title">Title:</label><br>
+      <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($blog['title']); ?>" required><br><br>
 
-    <label for="description">Description:</label><br>
-    <textarea id="description" name="description" required><?php echo htmlspecialchars($blog['description']);?> required</textarea><br><br>
+      <label for="description">Description:</label><br>
+      <textarea id="description" name="description" required><?php echo htmlspecialchars($blog['description']);?> required</textarea><br><br>
 
-    <label for="event_date">Event Date:</label><br>
-    <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($blog['event_date']); ?>" required><br><br>
+      <label for="event_date">Event Date:</label><br>
+      <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($blog['event_date']); ?>" required><br><br>
 
-    <label for="privacy_filter">Privacy:</label><br>
-    <select id="privacy_filter" name="privacy_filter">
-        <option value="public" <?php echo ($blog['privacy_filter'] == 'public') ? 'selected' : ''; ?>>Public</option>
-        <option value="private" <?php echo ($blog['privacy_filter'] == 'private') ? 'selected' : ''; ?>>Private</option>
-    </select><br><br>
+      <label for="privacy_filter">Privacy:</label><br>
+      <select id="privacy_filter" name="privacy_filter">
+          <option value="public" <?php echo ($blog['privacy_filter'] == 'public') ? 'selected' : ''; ?>>Public</option>
+          <option value="private" <?php echo ($blog['privacy_filter'] == 'private') ? 'selected' : ''; ?>>Private</option>
+      </select><br><br>
 
-    <input type="submit" value="Update Blog">
-    
-</form>
+      <input type="submit" value="Update Blog">
+      
+  </form>
+</div>
+</main>
+<footer>
+    <p>© 2024 ABCD Blog. All rights reserved.</p>
+</footer>
 </body>
 </html>
