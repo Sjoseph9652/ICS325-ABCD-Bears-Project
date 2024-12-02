@@ -1,4 +1,29 @@
-<?php
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog ABCD</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<main>
+<header>
+    <a href="index.php">
+        <img src="images/abcd.png" alt="ABCD Blog Logo">
+    </a>
+</header>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="sign-in.php">Sign In</a></li>
+            <li><a href="create-account.php">Create Account</a></li>
+            <li><a href="create_blog.php">Create Blog Post</a></li>
+        </ul>
+    </nav>
+    <?php
 require 'db_configuration.php';
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -57,3 +82,11 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 ?>
+
+    </main>
+    <script src="script.js"></script>
+    <footer>
+        <p>© 2024 ABCD Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>
