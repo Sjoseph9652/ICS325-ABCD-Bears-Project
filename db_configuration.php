@@ -3,7 +3,7 @@
    DEFINE('DATABASE_DATABASE', 'abcd');
    DEFINE('DATABASE_USER', 'root');
    DEFINE('DATABASE_PASSWORD', '');
-   
+
    // Create a connection using PDO
     try {
         $conn = new PDO("mysql:host=" . DATABASE_HOST . ";dbname=" . DATABASE_DATABASE, DATABASE_USER, DATABASE_PASSWORD);

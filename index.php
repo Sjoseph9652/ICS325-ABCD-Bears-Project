@@ -38,6 +38,11 @@ if (isset($_SESSION["email"])) {
 <body>
 
 <h1>ABCD BLOG</h1>
+<header>
+    <a href="index.php">
+        <img src="images/abcd.png" alt="ABCD Blog Logo">
+    </a>
+</header>
 
 <nav>
     <ul>
@@ -46,6 +51,9 @@ if (isset($_SESSION["email"])) {
         <li><a href="create-account.php">Create Account</a></li>
         <li><a href="create_blog.php">Create Blog Post</a></li>
         <li><a href="logged-in.php">My Blogs</a></li>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <li><a href="viewUsers.php">Users</a></li>
+        <?php endif; ?>
     </ul>
 </nav>
 
@@ -65,6 +73,8 @@ if (isset($_SESSION["email"])) {
     <input type="date" name="start_date" value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
     <input type="date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
 
+    <button type="submit">Filter</button>
+    <br>
     <!-- Sort buttons as part of the form -->
     <button type="submit" name="order" value="alphabetical" class="sort-button">Alphabetical</button>
     <button type="submit" name="order" value="chronological" class="sort-button">Chronological</button>
