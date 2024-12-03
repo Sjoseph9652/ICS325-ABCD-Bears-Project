@@ -43,7 +43,6 @@ if (isset($_SESSION["email"])) {
         <img src="images/abcd.png" alt="ABCD Blog Logo">
     </a>
 </header>
-
 <nav>
     <ul>
         <li><a href="index.php">Home</a></li>
@@ -72,7 +71,6 @@ if (isset($_SESSION["email"])) {
     <label for="start_date">Date Range:</label>
     <input type="date" name="start_date" value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
     <input type="date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
-
     <button type="submit">Filter</button>
     <br>
     <!-- Sort buttons as part of the form -->

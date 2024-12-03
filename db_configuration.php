@@ -1,9 +1,9 @@
 <?php
    DEFINE('DATABASE_HOST', 'localhost');
-   DEFINE('DATABASE_DATABASE', 'abcd');
+   DEFINE('DATABASE_DATABASE', 'photoabcd');
    DEFINE('DATABASE_USER', 'root');
-   DEFINE('DATABASE_PASSWORD', '');
-
+   DEFINE('DATABASE_PASSWORD', 'Bumblebee@87');
+   
    // Create a connection using PDO
     try {
         $conn = new PDO("mysql:host=" . DATABASE_HOST . ";dbname=" . DATABASE_DATABASE, DATABASE_USER, DATABASE_PASSWORD);
