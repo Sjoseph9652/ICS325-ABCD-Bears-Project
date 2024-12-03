@@ -1,3 +1,4 @@
+
 <?php
 require 'db_configuration.php';
 session_start();
@@ -78,3 +79,4 @@ if (is_dir($imageDirectory)) {
         <a class="btn btn-primary" href="index.php">Return to Home</a>
 </body>
 </html>
+
