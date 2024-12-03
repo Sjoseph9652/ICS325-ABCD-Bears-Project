@@ -76,9 +76,9 @@ if (isset($_POST['update_role_email'])) {
 
 // Fetch all users and the count of blogs they created
 $sql = "SELECT users.email, users.first_name, users.last_name, users.role, users.created_time, 
-               COUNT(blog_id) AS blogs_created 
+               COUNT(blogs.blog_id) AS blogs_created 
         FROM users 
-        LEFT JOIN blogs ON users.email = email 
+        LEFT JOIN blogs ON users.email = blogs.creator_email 
         GROUP BY users.email 
         ORDER BY users.created_time DESC";
 $stmt = $conn->prepare($sql);
@@ -166,7 +166,7 @@ if (!$result) {
                                 <input type="hidden" name="update_role_email" value="<?php echo htmlspecialchars($row['email']); ?>">
                                 <select name="new_role">
                                     <option value="admin" <?php echo $row['role'] == 'admin' ? 'selected' : ''; ?>>Admin</option>
-                                    <option value="blogger" <?php echo $row['role'] == 'blogger' ? 'selected' : ''; ?>>Blogger</option>
+                                    <option value="user" <?php echo $row['role'] == 'blogger' ? 'selected' : ''; ?>>Blogger</option>
                                 </select>
                                 <button type="submit" class="btn btn-warning">Update Role</button>
                             </form>
