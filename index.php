@@ -46,8 +46,14 @@ if (isset($_SESSION["email"])) {
 <nav>
     <ul>
         <li><a href="index.php">Home</a></li>
-        <li><a href="sign-in.php">Sign In</a></li>
+        <?php if (isset($_SESSION['role'])): ?>
+        <li><a href="logout.php">Log out</a></li>
+        <?php elseif (!isset($_SESSION['role'])): ?>
+        <li><a href="sign-in.php">Sign in</a></li>
+        <?php endif; ?>
+        <?php if (!isset($_SESSION['role'])): ?>
         <li><a href="create-account.php">Create Account</a></li>
+        <?php endif; ?>
         <li><a href="create_blog.php">Create Blog Post</a></li>
         <li><a href="logged-in.php">My Blogs</a></li>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>

@@ -12,9 +12,47 @@ require 'db_configuration.php';
 $conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 $user_mail = $_SESSION["email"]; // Get the logged-in user's email
 
+// Fetch the alphabet books created by the user
+$alphabet_books_sql = "SELECT id, title FROM alphabet_book WHERE user_email = '$user_mail'";
+$alphabet_books_result = $conn->query($alphabet_books_sql);
+
+// Now that the session is validated, we can proceed to display the blogs
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Base query with sorting for blogs
+$sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'event_date' ? "ORDER BY event_date DESC" : "ORDER BY creation_date DESC";
+$sql = "SELECT blog_id, title, description, event_date, privacy_filter, creation_date FROM blogs WHERE creator_email = '$user_mail'";
+
+// Add filters for the blogs
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $search = $conn->real_escape_string($_GET['search']);
+    $sql .= " AND (title LIKE '%$search%' OR description LIKE '%$search%')";
+}
+
+if (isset($_GET['alpha']) && !empty($_GET['alpha'])) {
+    $alpha = $conn->real_escape_string($_GET['alpha']);
+    $sql .= " AND title LIKE '$alpha%'";
+}
+
+if (!empty($_GET['start_date'])) {
+    $start_date = $conn->real_escape_string($_GET['start_date']);
+    $sql .= " AND creation_date >= '$start_date'";
+}
+
+if (!empty($_GET['end_date'])) {
+    $end_date = $conn->real_escape_string($_GET['end_date']);
+    $sql .= " AND creation_date <= '$end_date'";
+}
+
+$sql .= " $sortOrder";
+
+// Execute the blog query
+$result = $conn->query($sql); 
+
 $conn->close();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +70,8 @@ $conn->close();
     <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="create_blog.php">Create Blog Post</a></li>
+        <li><a href="logout.php">Log out</a></li>
+        <li><a href="alphabet_book.php">Create Alphabet Book</a></li>
     </ul>
 </nav>
 
@@ -55,50 +95,29 @@ $conn->close();
     <button type="submit">Filter</button>
 </form>
 
+<h1>Your Alphabet Books</h1>
+<?php if ($alphabet_books_result && $alphabet_books_result->num_rows > 0): ?>
+    <ul>
+        <?php while ($row = $alphabet_books_result->fetch_assoc()): ?>
+            <li>
+                <a href="view_blog_in_alphabet_book.php?book_id=<?php echo $row['id']; ?>">
+                    <?php echo htmlspecialchars($row['title']); ?>
+                </a>
+            </li>
+        <?php endwhile; ?>
+    </ul>
+<?php else: ?>
+    <p>You have not created any alphabet books yet.</p>
+<?php endif; ?>
+
 <div>
     <a href="logged-in.php?sort=event_date">Sort by Event Date</a> | 
     <a href="logged-in.php?sort=creation_date">Sort by Creation Post Date</a>
 </div>
 
 <?php
-// Now that the session is validated, we can proceed to display the blogs
-$conn = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
-$user_mail = $_SESSION["email"];
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Base query with sorting
-$sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'event_date' ? "ORDER BY event_date DESC" : "ORDER BY creation_date DESC";
-$sql = "SELECT blog_id, title, description, event_date, privacy_filter, creation_date FROM blogs WHERE creator_email = '$user_mail'";
-
-// Add filters
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $search = $conn->real_escape_string($_GET['search']);
-    $sql .= " AND (title LIKE '%$search%' OR description LIKE '%$search%')";
-}
-
-if (isset($_GET['alpha']) && !empty($_GET['alpha'])) {
-    $alpha = $conn->real_escape_string($_GET['alpha']);
-    $sql .= " AND title LIKE '$alpha%'";
-}
-
-if (!empty($_GET['start_date'])) {
-    $start_date = $conn->real_escape_string($_GET['start_date']);
-    $sql .= " AND creation_date >= '$start_date'";
-}
-
-if (!empty($_GET['end_date'])) {
-    $end_date = $conn->real_escape_string($_GET['end_date']);
-    $sql .= " AND creation_date <= '$end_date'";
-}
-
-$sql .= " $sortOrder";
-
-
-$result = $conn->query($sql); 
-if ($result->num_rows > 0) {
+// Display blogs
+if ($result && $result->num_rows > 0) {
     echo "<h1>User Blogs</h1>";
     while ($row = $result->fetch_assoc()) {
         echo "<div>";
@@ -121,14 +140,12 @@ if ($result->num_rows > 0) {
         }
 
         echo "<a href='edit.php?id=" . $row['blog_id'] . "'>Edit</a> | ";
-        echo "<a href='delete_blog.php?blog_id=" . urlencode($row['blog_id']) . "' onclick=\"return confirm('Are you sure you want to delete this blog?');\">Delete</a>";        }
-
+        echo "<a href='delete_blog.php?blog_id=" . urlencode($row['blog_id']) . "' onclick=\"return confirm('Are you sure you want to delete this blog?');\">Delete</a>";        
         echo "</div><hr>";
+    }
 } else {
     echo "<h1>No Blogs Found</h1>";
 }
-
-$conn->close();
 ?>
 
 <script src="script.js"></script>
